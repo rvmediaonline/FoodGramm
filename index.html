@@ -750,17 +750,28 @@ nav button.active::after {
 /* ===== DISCLAIMER ===== */
 .disclaimer { font-size: 11px; color: #94a3b8; text-align: center; padding: 4px 0 2px; line-height: 1.5; }
 
-/* ===== WEIGHT GOAL CARD ===== */
+/* ===== WEIGHT GOAL CARD (GAIN, LOSS, MAINTAIN) ===== */
 .goal-card {
-  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
   border-radius: var(--radius);
   padding: 18px 16px;
   margin-bottom: 14px;
   color: white;
-  box-shadow: 0 6px 24px rgba(124,58,237,.35);
   border: none;
   position: relative;
   overflow: hidden;
+  transition: transform var(--trans), box-shadow var(--trans);
+}
+.goal-card.gain {
+  background: linear-gradient(135deg, #7c3aed 0%, #9333ea 50%, #a855f7 100%);
+  box-shadow: 0 6px 24px rgba(124,58,237,.35);
+}
+.goal-card.loss {
+  background: linear-gradient(135deg, #ea580c 0%, #f97316 50%, #fb923c 100%);
+  box-shadow: 0 6px 24px rgba(234,88,12,.35);
+}
+.goal-card.maintain {
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  box-shadow: 0 6px 24px rgba(5,150,105,.35);
 }
 .goal-card::before {
   content:'';position:absolute;top:-20px;right:-20px;
@@ -774,41 +785,60 @@ nav button.active::after {
 .goal-top { display:flex;align-items:center;gap:12px;margin-bottom:14px; }
 .goal-icon { font-size:32px; }
 .goal-title { font-size:16px;font-weight:800;letter-spacing:-.3px; }
-.goal-sub { font-size:12px;opacity:.8;margin-top:2px; }
+.goal-sub { font-size:12px;opacity:.88;margin-top:2px; }
 .goal-stats { display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px; }
 .goal-stat {
-  background:rgba(255,255,255,.15);
+  background:rgba(255,255,255,.16);
   border-radius:12px;padding:10px;text-align:center;
   backdrop-filter:blur(4px);
 }
 .goal-stat-val { font-size:18px;font-weight:800;line-height:1; }
-.goal-stat-lbl { font-size:10px;opacity:.8;margin-top:3px;text-transform:uppercase;letter-spacing:.4px; }
+.goal-stat-lbl { font-size:10px;opacity:.85;margin-top:3px;text-transform:uppercase;letter-spacing:.4px; }
 .goal-progress-wrap {
   background:rgba(255,255,255,.2);
   border-radius:99px;height:8px;overflow:hidden;margin-bottom:6px;
 }
 .goal-progress-bar {
   height:100%;border-radius:99px;
-  background:rgba(255,255,255,.9);
+  background:rgba(255,255,255,.95);
   transition:width .6s cubic-bezier(.4,0,.2,1);
 }
-.goal-progress-labels { display:flex;justify-content:space-between;font-size:11px;opacity:.8; }
+.goal-progress-labels { display:flex;justify-content:space-between;font-size:11px;opacity:.88; }
 .goal-eta {
   display:inline-flex;align-items:center;gap:6px;
-  background:rgba(255,255,255,.18);
+  background:rgba(255,255,255,.2);
   border-radius:99px;padding:6px 14px;
   font-size:12px;font-weight:700;margin-top:10px;
 }
 
+/* ===== GOAL MODE TABS ===== */
+.goal-mode-tabs {
+  display: flex; gap: 6px; background: var(--page-bg); padding: 5px; border-radius: 14px; margin-bottom: 14px; border: 1px solid var(--border);
+}
+.goal-mode-tab {
+  flex: 1; border: none; background: transparent; padding: 10px 4px; border-radius: 10px;
+  font: inherit; font-size: 12px; font-weight: 700; color: var(--muted); cursor: pointer; transition: all var(--trans);
+  display: flex; align-items: center; justify-content: center; gap: 4px; text-align: center;
+}
+.goal-mode-tab.active.loss {
+  background: linear-gradient(135deg, #ea580c, #f97316); color: white; box-shadow: 0 3px 10px rgba(234,88,12,.3);
+}
+.goal-mode-tab.active.gain {
+  background: linear-gradient(135deg, #7c3aed, #a855f7); color: white; box-shadow: 0 3px 10px rgba(124,58,237,.3);
+}
+.goal-mode-tab.active.maintain {
+  background: linear-gradient(135deg, #059669, #10b981); color: white; box-shadow: 0 3px 10px rgba(5,150,105,.3);
+}
+
 /* ===== GOAL SETUP INLINE ===== */
 .goal-setup-hint {
-  background: linear-gradient(135deg,#ede9fe,#f5f3ff);
-  border:2px dashed #a78bfa;border-radius:var(--radius);
+  background: linear-gradient(135deg,#f8fafc,#f1f5f9);
+  border:2px dashed #cbd5e1;border-radius:var(--radius);
   padding:18px;margin-bottom:14px;text-align:center;
 }
 .goal-setup-hint .hint-icon { font-size:36px;margin-bottom:8px; }
-.goal-setup-hint h3 { font-size:16px;font-weight:800;color:#5b21b6;margin-bottom:4px; }
-.goal-setup-hint p { font-size:13px;color:#7c3aed;margin-bottom:12px; }
+.goal-setup-hint h3 { font-size:16px;font-weight:800;color:var(--slate);margin-bottom:4px; }
+.goal-setup-hint p { font-size:13px;color:var(--muted);margin-bottom:12px; }
 
 /* ===== RATE PILL SELECTOR ===== */
 .rate-pills { display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:8px;margin-top:6px; }
@@ -821,13 +851,17 @@ nav button.active::after {
 }
 .rate-pill-rate { font-size:13px;font-weight:700;color:var(--slate); }
 .rate-pill-desc { font-size:11px;color:var(--muted); }
-.rate-pill.active {
+.rate-pill.active.gain {
   background:#7c3aed;border-color:#7c3aed;
   box-shadow:0 3px 10px rgba(124,58,237,.3);
 }
-.rate-pill.active .rate-pill-rate { color:white; }
-.rate-pill.active .rate-pill-desc { color:rgba(255,255,255,.85); }
-.rate-pill:hover:not(.active) { border-color:#a78bfa;background:#f5f3ff; }
+.rate-pill.active.loss {
+  background:#ea580c;border-color:#ea580c;
+  box-shadow:0 3px 10px rgba(234,88,12,.3);
+}
+.rate-pill.active.gain .rate-pill-rate, .rate-pill.active.loss .rate-pill-rate { color:white; }
+.rate-pill.active.gain .rate-pill-desc, .rate-pill.active.loss .rate-pill-desc { color:rgba(255,255,255,.9); }
+.rate-pill:hover:not(.active) { border-color:#cbd5e1;background:#f8fafc; }
 .rate-custom-row {
   display:flex;align-items:center;gap:10px;margin-top:10px;
   background:white;border:1.5px solid var(--border);border-radius:12px;padding:8px 12px;
@@ -835,9 +869,9 @@ nav button.active::after {
 .rate-custom-row label { font-size:12px;font-weight:700;color:var(--slate);white-space:nowrap;margin:0; }
 .rate-custom-input {
   width:85px;padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;
-  font:inherit;font-size:14px;font-weight:700;color:#7c3aed;text-align:center;outline:none;
+  font:inherit;font-size:14px;font-weight:700;color:var(--slate);text-align:center;outline:none;
 }
-.rate-custom-input:focus { border-color:#7c3aed; }
+.rate-custom-input:focus { border-color:var(--green); }
 </style>
 </head>
 <body>
@@ -944,11 +978,13 @@ const dk=d=>new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);
 
 let S=null;
 try{S=JSON.parse(localStorage.getItem('fg')||'null')}catch(e){}
-S=S||{prof:{name:'',photo:'',sex:'m',age:30,h:170,w:70,act:1.375,goal:0},log:{},water:{},wt:{},custom:[],wgoal:{targetW:0,ratePerWeek:0.25}};
+S=S||{prof:{name:'',photo:'',sex:'m',age:30,h:170,w:70,act:1.375,goal:0},log:{},water:{},wt:{},custom:[],wgoal:{mode:'loss',targetW:0,ratePerWeek:0.5,startW:70}};
 if(!S.prof) S.prof={name:'',photo:'',sex:'m',age:30,h:170,w:70,act:1.375,goal:0};
 if(S.prof.name===undefined) S.prof.name='';
 if(S.prof.photo===undefined) S.prof.photo='';
-if(!S.wgoal) S.wgoal={targetW:0,ratePerWeek:0.25};
+if(!S.wgoal) S.wgoal={mode:'loss',targetW:0,ratePerWeek:0.5,startW:S.prof.w||70};
+if(!S.wgoal.mode) S.wgoal.mode = (S.wgoal.targetW && S.wgoal.targetW > (S.prof.w||70)) ? 'gain' : 'loss';
+if(!S.wgoal.startW) S.wgoal.startW = S.prof.w || 70;
 const save=()=>{try{localStorage.setItem('fg',JSON.stringify(S))}catch(e){}};
 
 function renderAvatar(photo, sex){
@@ -1008,21 +1044,53 @@ const ALL=()=>DB.concat(S.custom),g=n=>DB.find(x=>x.n==n);
 const tot=L=>L.reduce((a,e)=>({k:a.k+e.k,p:a.p+e.p,c:a.c+e.c,f:a.f+e.f}),{k:0,p:0,c:0,f:0});
 
 function target(){
-  const p=S.prof,wg=S.wgoal||{};
+  const p=S.prof, wg=S.wgoal||{};
   const bmr=10*p.w+6.25*p.h-5*p.age+(p.sex=='m'?5:-161);
   const tdee=Math.round(bmr*p.act);
-  // If weight gain goal is active, override calorie surplus from weekly rate
-  let surplusKcal=p.goal; // default from goal selector
-  if(wg.targetW>p.w && wg.ratePerWeek>0){
-    // 1 kg body mass gain ≈ 7700 kcal surplus
-    surplusKcal=Math.round((wg.ratePerWeek*7700)/7);
+  let mode=wg.mode||(wg.targetW>p.w?'gain':(wg.targetW>0&&wg.targetW<p.w?'loss':'maintain'));
+  let deltaKcal=0;
+  let pr=Math.round(p.w*1.6); // default healthy maintenance protein
+
+  if(mode==='gain' && wg.targetW>p.w && wg.ratePerWeek>0){
+    // 1 kg body mass ≈ 7700 kcal surplus
+    deltaKcal=Math.round((wg.ratePerWeek*7700)/7);
+    pr=Math.round(p.w*2.0); // 2.0g/kg hypertrophy
+  } else if(mode==='loss' && wg.targetW>0 && wg.targetW<p.w && wg.ratePerWeek>0){
+    // 1 kg fat loss ≈ 7700 kcal deficit
+    deltaKcal=-Math.round((wg.ratePerWeek*7700)/7);
+    pr=Math.round(p.w*2.2); // 2.2g/kg lean muscle shield during deficit
+  } else if(p.goal!==0){
+    deltaKcal=p.goal;
+    pr=Math.round(p.w*2.0);
   }
-  const k=Math.max(1500,Math.round(tdee+surplusKcal));
-  // For muscle gain: 1.8–2.2g protein per kg; use 2.0g
-  const pr=wg.targetW>p.w?Math.round(p.w*2.0):Math.round(p.w*1.6);
-  const f=Math.round(k*.25/9);
-  return{k,p:pr,f,c:Math.max(0,Math.round((k-pr*4-f*9)/4)),tdee,surplus:surplusKcal};
+
+  // Safe calorie floor: 1200 kcal female, 1400 kcal male
+  const floor=p.sex==='m'?1400:1200;
+  const k=Math.max(floor,Math.round(tdee+deltaKcal));
+  const f=Math.max(35,Math.round(k*0.25/9));
+  const c=Math.max(0,Math.round((k-pr*4-f*9)/4));
+
+  return{k,p:pr,f,c,tdee,deltaKcal,surplus:deltaKcal,mode};
 }
+
+const LOSS_PRESETS = [
+  { r: 0.20, label: '0.20 kg/wk', tag: 'Gentle Cut', kcal: '-220 kcal/d' },
+  { r: 0.35, label: '0.35 kg/wk', tag: 'Steady Loss', kcal: '-385 kcal/d' },
+  { r: 0.50, label: '0.50 kg/wk', tag: 'Recommended', kcal: '-550 kcal/d' },
+  { r: 0.75, label: '0.75 kg/wk', tag: 'Aggressive Cut', kcal: '-825 kcal/d' },
+  { r: 1.00, label: '1.00 kg/wk', tag: 'Fast Cut / Max Safe', kcal: '-1100 kcal/d' }
+];
+
+const GAIN_PRESETS = [
+  { r: 0.10, label: '0.10 kg/wk', tag: 'Micro-Bulk', kcal: '+110 kcal/d' },
+  { r: 0.15, label: '0.15 kg/wk', tag: 'Gentle Surplus', kcal: '+165 kcal/d' },
+  { r: 0.20, label: '0.20 kg/wk', tag: 'Lean Bulk', kcal: '+220 kcal/d' },
+  { r: 0.25, label: '0.25 kg/wk', tag: 'Recommended', kcal: '+275 kcal/d' },
+  { r: 0.35, label: '0.35 kg/wk', tag: 'Steady Growth', kcal: '+385 kcal/d' },
+  { r: 0.50, label: '0.50 kg/wk', tag: 'Standard Bulk', kcal: '+550 kcal/d' },
+  { r: 0.75, label: '0.75 kg/wk', tag: 'Aggressive Bulk', kcal: '+825 kcal/d' },
+  { r: 1.00, label: '1.00 kg/wk', tag: 'Fast / Hardgainer', kcal: '+1100 kcal/d' }
+];
 
 const go=t=>{tab=t;sel=null;render();scrollTo({top:0,behavior:'smooth'})};
 
@@ -1185,37 +1253,64 @@ function vToday(){
   return h;
 }
 
-// ─── WEIGHT GOAL CARD ────────────────────────────────────────────────────────
+// ─── WEIGHT GOAL CARD (FAT LOSS & WEIGHT GAIN) ────────────────────────────────
 function vGoalCard(){
-  const wg=S.wgoal||{},p=S.prof;
-  const hasGoal=wg.targetW>p.w && wg.ratePerWeek>0;
+  const wg=S.wgoal||{}, p=S.prof, t=target();
+  const mode = wg.mode || (wg.targetW > p.w ? 'gain' : (wg.targetW > 0 && wg.targetW < p.w ? 'loss' : 'maintain'));
+  const isLoss = mode === 'loss';
+  const isGain = mode === 'gain';
+  const hasGoal = (isLoss && wg.targetW > 0 && wg.targetW < p.w && wg.ratePerWeek > 0) ||
+                  (isGain && wg.targetW > p.w && wg.ratePerWeek > 0);
+
   if(!hasGoal){
     return `<div class="goal-setup-hint">
       <div class="hint-icon">🎯</div>
-      <h3>Set Your Weight Gain Goal</h3>
-      <p>Go to Profile → Weight Gain Goal to get a personalised calorie & protein plan with an ETA.</p>
-      <button class="btn-primary" style="width:auto;padding:10px 22px;background:linear-gradient(90deg,#7c3aed,#a855f7);box-shadow:0 4px 12px rgba(124,58,237,.35)" onclick="go('me')">Set Goal →</button>
+      <h3>Choose Your Fitness Goal</h3>
+      <p>Set a <b>🔥 Fat Loss</b> or <b>💪 Muscle & Weight Gain</b> goal to get personalized calories, high-protein target, and progress timeline.</p>
+      <button class="btn-primary" style="width:auto;padding:10px 24px;background:linear-gradient(90deg,var(--green),var(--green-2))" onclick="go('me')">Set Your Goal →</button>
     </div>`;
   }
-  const toGain=+(wg.targetW-p.w).toFixed(1);
-  const gained=Object.keys(S.wt).length>=2
-    ? Math.max(0,+(S.wt[Object.keys(S.wt).sort().slice(-1)[0]]-S.wt[Object.keys(S.wt).sort()[0]]).toFixed(1))
-    : 0;
-  const remaining=Math.max(0,+(toGain-gained).toFixed(1));
-  const pct=Math.min(gained/toGain*100,100);
-  // weeks needed
-  const weeksLeft=wg.ratePerWeek>0?Math.ceil(remaining/wg.ratePerWeek):0;
-  const eta=etaString(weeksLeft);
-  const t=target();
-  const kcalSurplus=t.surplus>0?`+${t.surplus}`:`${t.surplus}`;
 
-  return `<div class="goal-card">
+  const startW = wg.startW || p.w;
+  let diff = 0, progressDiff = 0, remaining = 0, pct = 0, weeksLeft = 0;
+
+  if(isLoss){
+    diff = +(startW - wg.targetW).toFixed(1);
+    if(diff <= 0) diff = +(p.w - wg.targetW).toFixed(1);
+    progressDiff = Math.max(0, +(startW - p.w).toFixed(1));
+    remaining = Math.max(0, +(p.w - wg.targetW).toFixed(1));
+    pct = Math.min(100, Math.max(0, diff > 0 ? (progressDiff / diff * 100) : 0));
+    weeksLeft = wg.ratePerWeek > 0 ? Math.ceil(remaining / wg.ratePerWeek) : 0;
+  } else {
+    diff = +(wg.targetW - startW).toFixed(1);
+    if(diff <= 0) diff = +(wg.targetW - p.w).toFixed(1);
+    progressDiff = Math.max(0, +(p.w - startW).toFixed(1));
+    remaining = Math.max(0, +(wg.targetW - p.w).toFixed(1));
+    pct = Math.min(100, Math.max(0, diff > 0 ? (progressDiff / diff * 100) : 0));
+    weeksLeft = wg.ratePerWeek > 0 ? Math.ceil(remaining / wg.ratePerWeek) : 0;
+  }
+
+  const eta = etaString(weeksLeft);
+  const cardClass = isLoss ? 'goal-card loss' : 'goal-card gain';
+  const icon = isLoss ? '🔥' : '💪';
+  const title = isLoss ? 'Fat Loss & Cutting Goal' : 'Muscle & Weight Gain Goal';
+  const sub = isLoss
+    ? `${p.w} kg → ${wg.targetW} kg · -${wg.ratePerWeek} kg/week`
+    : `${p.w} kg → ${wg.targetW} kg · +${wg.ratePerWeek} kg/week`;
+  const deltaLabel = isLoss
+    ? `-${Math.abs(t.deltaKcal)}`
+    : `+${Math.abs(t.deltaKcal)}`;
+  const deltaName = isLoss ? 'Deficit/day' : 'Surplus/day';
+  const labelProgress = isLoss ? `${progressDiff} kg lost` : `${progressDiff} kg gained`;
+  const labelRemaining = isLoss ? `${remaining} kg to lose` : `${remaining} kg to gain`;
+
+  return `<div class="${cardClass}">
     <div class="goal-card-inner">
       <div class="goal-top">
-        <div class="goal-icon">💪</div>
+        <div class="goal-icon">${icon}</div>
         <div>
-          <div class="goal-title">Weight Gain Goal</div>
-          <div class="goal-sub">${p.w} kg → ${wg.targetW} kg · +${wg.ratePerWeek} kg/week</div>
+          <div class="goal-title">${title}</div>
+          <div class="goal-sub">${sub}</div>
         </div>
       </div>
       <div class="goal-stats">
@@ -1225,20 +1320,20 @@ function vGoalCard(){
         </div>
         <div class="goal-stat">
           <div class="goal-stat-val">${t.p}g</div>
-          <div class="goal-stat-lbl">Protein</div>
+          <div class="goal-stat-lbl">${isLoss ? 'Protein (Shield)' : 'Protein (Build)'}</div>
         </div>
         <div class="goal-stat">
-          <div class="goal-stat-val">${kcalSurplus}</div>
-          <div class="goal-stat-lbl">Surplus/day</div>
+          <div class="goal-stat-val">${deltaLabel}</div>
+          <div class="goal-stat-lbl">${deltaName}</div>
         </div>
       </div>
       <div class="goal-progress-wrap">
         <div class="goal-progress-bar" style="width:${pct.toFixed(1)}%"></div>
       </div>
       <div class="goal-progress-labels">
-        <span>${gained} kg gained</span>
+        <span>${labelProgress}</span>
         <span>${pct.toFixed(0)}%</span>
-        <span>${remaining} kg to go</span>
+        <span>${labelRemaining}</span>
       </div>
       <div class="goal-eta">⏱️ ${eta}</div>
     </div>
@@ -1341,19 +1436,40 @@ function addCustom(){
 }
 
 // ─── PLAN ─────────────────────────────────────────────────────────────────────
-const SPLIT={Breakfast:.25,Lunch:.35,Snacks:.1,Dinner:.3},
-BF=['Idli','Poha','Upma','Oats porridge (milk)','Besan chilla','Omelette (2 eggs)','Plain paratha','Brown bread','Milk (toned)','Banana','Curd (dahi)','Sprouts (moong)'],
-MN=['Dal (cooked)','Rajma','Chole','Paneer bhurji','Mixed veg sabzi','Palak paneer','Chicken curry','Grilled chicken breast','Fish curry','Moong dal khichdi','Tofu','Salad (cucumber, tomato)','Curd (dahi)','Steamed rice'],
-SN=['Apple','Orange','Almonds','Makhana (roasted)','Buttermilk (chaas)','Coconut water','Papaya','Peanuts (roasted)','Sprouts (moong)'];
+const SPLIT={Breakfast:.25,Lunch:.35,Snacks:.1,Dinner:.3};
+const BF_LOSS=['Egg boiled','Omelette (2 eggs)','Besan chilla','Sprouts (moong)','Oats porridge (milk)','Curd (dahi)','Apple','Idli','Upma','Poha'];
+const MN_LOSS=['Grilled chicken breast','Tofu','Paneer bhurji','Dal (cooked)','Rajma','Chole','Mixed veg sabzi','Palak paneer','Salad (cucumber, tomato)','Curd (dahi)','Fish curry','Moong dal khichdi','Steamed rice'];
+const SN_LOSS=['Sprouts (moong)','Buttermilk (chaas)','Egg boiled','Apple','Orange','Papaya','Coconut water','Makhana (roasted)'];
+
+const BF_GAIN=['Plain paratha','Oats porridge (milk)','Omelette (2 eggs)','Milk (toned)','Banana','Peanuts (roasted)','Poha','Upma','Besan chilla','Idli'];
+const MN_GAIN=['Paneer bhurji','Palak paneer','Chicken curry','Grilled chicken breast','Dal (cooked)','Rajma','Chole','Steamed rice','Fish curry','Mixed veg sabzi'];
+const SN_GAIN=['Almonds','Peanuts (roasted)','Banana','Makhana (roasted)','Curd (dahi)','Apple','Coconut water'];
 
 function gen(){
-  const T=target().k;plan={};
+  const t=target(), T=t.k, isLoss=t.mode==='loss';
+  plan={};
+  const BF_P = isLoss ? BF_LOSS : BF_GAIN;
+  const MN_P = isLoss ? MN_LOSS : MN_GAIN;
+  const SN_P = isLoss ? SN_LOSS : SN_GAIN;
   M.forEach(m=>{
-    const b=T*SPLIT[m],main=m==='Lunch'||m==='Dinner',pool=(main?MN:m==='Snacks'?SN:BF).slice().sort(()=>Math.random()-.5);
-    let it=[],s=0;
-    if(main){it.push({f:g('Roti (chapati)'),q:2});s=208}
-    for(const nm of pool){const f=g(nm);if(f&&s+f.k<=b*1.05){it.push({f,q:1});s+=f.k}if(s>=b*.85)break}
-    plan[m]={b:Math.round(b),it,s:Math.round(s)};
+    const b=T*SPLIT[m];
+    const main=m==='Lunch'||m==='Dinner';
+    const pool=(main?MN_P:m==='Snacks'?SN_P:BF_P).slice().sort(()=>Math.random()-.5);
+    let it=[], s=0;
+    if(main){
+      const rotiCount = (isLoss && b < 520) ? 1 : 2;
+      it.push({f:g('Roti (chapati)'), q:rotiCount});
+      s = 104 * rotiCount;
+    }
+    for(const nm of pool){
+      const f=g(nm);
+      if(f && s + f.k <= b * 1.05){
+        it.push({f, q:1});
+        s += f.k;
+      }
+      if(s >= b * 0.85) break;
+    }
+    plan[m]={b:Math.round(b), it, s:Math.round(s)};
   });
   render();
 }
@@ -1365,10 +1481,23 @@ function planAdd(){
 
 function vPlan(){
   const t=target();
+  const isLoss = t.mode==='loss';
+  const isGain = t.mode==='gain';
+  const modeTag = isLoss
+    ? '🔥 Fat Loss Plan · Caloric Deficit & 2.2g/kg Protein Shield'
+    : isGain
+    ? '💪 Muscle Building Plan · Caloric Surplus & Hypertrophy'
+    : '⚖️ Maintenance Plan · Energy Balance & Steady Weight';
+  const modeBadgeColor = isLoss ? '#ea580c' : isGain ? '#7c3aed' : '#059669';
+  const modeBadgeBg = isLoss ? '#ffedd5' : isGain ? '#ede9fe' : '#d1fae5';
+
   let h=`<div class="card">
     <div class="plan-hero">
+      <div style="display:inline-block;padding:5px 14px;border-radius:99px;font-size:11px;font-weight:700;color:${modeBadgeColor};background:${modeBadgeBg};margin-bottom:8px">
+        ${modeTag}
+      </div>
       <h2>🍽️ AI Meal Planner</h2>
-      <p>Get a balanced plan based on your daily goal of <b>${t.k} kcal</b></p>
+      <p>Personalized meal plan tailored to your daily goal of <b>${t.k} kcal</b> & <b>${t.p}g protein</b></p>
     </div>
     <button class="btn-primary" onclick="gen()">${plan?'🔄 Shuffle Plan':'✨ Suggest Meal Plan'}</button>
     ${plan?`<button class="btn-ghost" onclick="planAdd()">➕ Add to ${day===dk(new Date())?'Today':day}</button>`:''}
@@ -1399,7 +1528,7 @@ function vPlan(){
 function logWt(){const v=+$('#wv').value;if(!v)return;S.wt[dk(new Date())]=v;S.prof.w=v;save();showToast('Weight logged ✓');render()}
 
 function vProg(){
-  const ks=Object.keys(S.wt).sort().slice(-30),T=target().k;
+  const ks=Object.keys(S.wt).sort().slice(-30),t=target(),T=t.k,mode=t.mode,wg=S.wgoal||{};
   const ds=[...Array(7)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()-6+i);return{l:d.toLocaleDateString('en',{weekday:'short'}),v:tot(S.log[dk(d)]||[]).k}});
   const mx=Math.max(T,...ds.map(d=>d.v))*1.1||T*1.2;
   const logged=ds.filter(d=>d.v>0),avg=logged.length?Math.round(logged.reduce((a,d)=>a+d.v,0)/logged.length):0;
@@ -1407,12 +1536,19 @@ function vProg(){
 
   const bars=ds.map((d,i)=>{
     const h=d.v/mx*90;
-    const over=d.v>T;
+    let barColor = '#22c55e';
+    if(mode === 'loss'){
+      barColor = d.v > (T + 50) ? '#ef4444' : '#22c55e';
+    } else if(mode === 'gain'){
+      barColor = d.v >= (T * 0.92) ? '#7c3aed' : (d.v > 0 ? '#f59e0b' : '#22c55e');
+    } else {
+      barColor = d.v > (T + 100) ? '#ef4444' : '#22c55e';
+    }
     return `<g>
       <rect x="${i*42+9}" y="${100-h}" width="26" height="${h||2}" rx="6"
-        fill="${over?'#ef4444':'#22c55e'}" opacity="${d.v>0?1:.3}"/>
+        fill="${barColor}" opacity="${d.v>0?1:.3}"/>
       <text x="${i*42+22}" y="115" text-anchor="middle" font-size="9" fill="#94a3b8" font-family="system-ui">${d.l}</text>
-      ${d.v>0?`<text x="${i*42+22}" y="${Math.max(100-h-4,8)}" text-anchor="middle" font-size="8" fill="${over?'#ef4444':'#16a34a'}" font-weight="700" font-family="system-ui">${Math.round(d.v)}</text>`:''}
+      ${d.v>0?`<text x="${i*42+22}" y="${Math.max(100-h-4,8)}" text-anchor="middle" font-size="8" fill="${barColor}" font-weight="700" font-family="system-ui">${Math.round(d.v)}</text>`:''}
     </g>`;
   }).join('');
 
@@ -1420,18 +1556,34 @@ function vProg(){
   if(ks.length>1){
     const v=ks.map(k=>S.wt[k]),mn=Math.min(...v)-1,mx2=Math.max(...v)+1;
     const P=v.map((x,i)=>[10+i*280/(ks.length-1),100-(x-mn)/(mx2-mn)*90]);
+    const trendDiff = +(v[v.length-1] - v[0]).toFixed(1);
+    let trendLabel = '', trendColor = '#94a3b8';
+    if(mode === 'loss'){
+      if(trendDiff < 0){ trendColor = '#16a34a'; trendLabel = `${v[v.length-1]} kg (▼ ${Math.abs(trendDiff)} kg lost · On track)`; }
+      else if(trendDiff > 0){ trendColor = '#ea580c'; trendLabel = `${v[v.length-1]} kg (▲ +${trendDiff} kg)`; }
+      else { trendLabel = `${v[v.length-1]} kg (Stable)`; }
+    } else if(mode === 'gain'){
+      if(trendDiff > 0){ trendColor = '#16a34a'; trendLabel = `${v[v.length-1]} kg (▲ +${trendDiff} kg gained · On track)`; }
+      else if(trendDiff < 0){ trendColor = '#ea580c'; trendLabel = `${v[v.length-1]} kg (▼ ${Math.abs(trendDiff)} kg)`; }
+      else { trendLabel = `${v[v.length-1]} kg (Stable)`; }
+    } else {
+      trendColor = Math.abs(trendDiff) <= 0.5 ? '#16a34a' : '#ea580c';
+      trendLabel = `${v[v.length-1]} kg (${trendDiff>0?'+':''}${trendDiff} kg)`;
+    }
+
+    const strokeColor = mode==='loss' ? '#ea580c' : mode==='gain' ? '#7c3aed' : '#16a34a';
     wtChart=`<svg viewBox="0 0 300 110" width="100%" style="overflow:visible">
       <defs><linearGradient id="wg" x1="0" x2="0" y1="0" y2="1">
-        <stop offset="0%" stop-color="#16a34a" stop-opacity=".2"/>
-        <stop offset="100%" stop-color="#16a34a" stop-opacity="0"/>
+        <stop offset="0%" stop-color="${strokeColor}" stop-opacity=".2"/>
+        <stop offset="100%" stop-color="${strokeColor}" stop-opacity="0"/>
       </linearGradient></defs>
       <path d="M ${P.map(p=>p.join(',')).join(' L ')} L ${P[P.length-1][0]},110 L ${P[0][0]},110 Z" fill="url(#wg)"/>
-      <polyline points="${P.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-      ${P.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="#16a34a" stroke="white" stroke-width="2"/>`).join('')}
+      <polyline points="${P.map(p=>p.join(',')).join(' ')}" fill="none" stroke="${strokeColor}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+      ${P.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="${strokeColor}" stroke="white" stroke-width="2"/>`).join('')}
     </svg>
-    <div style="display:flex;justify-content:space-between;font-size:12px;margin-top:4px">
-      <span style="color:#94a3b8">${v[0]} kg</span>
-      <span style="color:${v[v.length-1]>v[0]?'#16a34a':'#94a3b8'};font-weight:700">${v[v.length-1]} kg ${v[v.length-1]>v[0]?'▲':v[v.length-1]<v[0]?'▼':''}</span>
+    <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-top:6px">
+      <span style="color:#94a3b8">Start: ${v[0]} kg</span>
+      <span style="color:${trendColor};font-weight:700">${trendLabel}</span>
     </div>`;
   }
 
@@ -1467,6 +1619,7 @@ function vProg(){
     <div class="section-head">
       <div class="icon" style="background:#fce7f3">⚖️</div>
       <h3>Weight Trend</h3>
+      ${wg.targetW>0?`<span style="margin-left:auto;font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px;background:${mode==='loss'?'#ffedd5':mode==='gain'?'#ede9fe':'#d1fae5'};color:${mode==='loss'?'#ea580c':mode==='gain'?'#7c3aed':'#059669'}">Goal: ${wg.targetW} kg</span>`:''}
     </div>
     <div class="wt-row">
       <div class="field">
@@ -1486,7 +1639,7 @@ function vProg(){
     <svg viewBox="0 0 300 120" width="100%" style="overflow:visible">
       ${bars}
       <line x1="0" x2="300" y1="${ty}" y2="${ty}" stroke="#f97316" stroke-dasharray="4 3" stroke-width="1.5" opacity=".7"/>
-      <text x="295" y="${ty-4}" text-anchor="end" font-size="8" fill="#f97316" font-family="system-ui" font-weight="700">goal</text>
+      <text x="295" y="${ty-4}" text-anchor="end" font-size="8" fill="#f97316" font-family="system-ui" font-weight="700">target (${T})</text>
     </svg>
     <div class="disclaimer">Daily average ${avg} kcal · Target ${T} kcal (dashed line)</div>
   </div>`;
@@ -1504,39 +1657,72 @@ function calcStreak(){
 }
 
 // ─── ME / PROFILE ─────────────────────────────────────────────────────────────
+let goalEditMode = null;
+
 function vMe(){
-  const p=S.prof,t=target(),wg=S.wgoal||{targetW:0,ratePerWeek:0.25};
+  const p=S.prof, t=target(), wg=S.wgoal||{};
   const userName=p.name&&p.name.trim()?esc(p.name.trim()):'';
   const o=(v,l,c)=>`<option value="${v}" ${c==v?'selected':''}>${l}</option>`;
   const bmiVal=(p.w/((p.h/100)**2)).toFixed(1);
   const bmiLabel=bmiVal<18.5?'Underweight':bmiVal<25?'Normal':bmiVal<30?'Overweight':'Obese';
   const bmiColor=bmiVal<18.5?'#3b82f6':bmiVal<25?'#22c55e':bmiVal<30?'#f97316':'#ef4444';
-  const hasGoal=wg.targetW>p.w && wg.ratePerWeek>0;
-  const goalLabel=hasGoal?`Gain to ${wg.targetW} kg`:p.goal<0?'Weight Loss':p.goal===0?'Maintenance':'Weight Gain';
-  const RATE_PRESETS = [
-    { r: 0.10, label: '0.10 kg/wk', tag: 'Micro / Ultra-Lean', kcal: '+110 kcal' },
-    { r: 0.15, label: '0.15 kg/wk', tag: 'Gentle Surplus', kcal: '+165 kcal' },
-    { r: 0.20, label: '0.20 kg/wk', tag: 'Lean Bulk', kcal: '+220 kcal' },
-    { r: 0.25, label: '0.25 kg/wk', tag: 'Recommended', kcal: '+275 kcal' },
-    { r: 0.35, label: '0.35 kg/wk', tag: 'Steady Growth', kcal: '+385 kcal' },
-    { r: 0.50, label: '0.50 kg/wk', tag: 'Standard Bulk', kcal: '+550 kcal' },
-    { r: 0.75, label: '0.75 kg/wk', tag: 'Aggressive Bulk', kcal: '+825 kcal' },
-    { r: 1.00, label: '1.00 kg/wk', tag: 'Fast / Hardgainer', kcal: '+1100 kcal' }
-  ];
 
-  // ETA calculation
-  let etaHtml='';
-  if(hasGoal){
-    const toGain=+(wg.targetW-p.w).toFixed(1);
-    const weeks=Math.ceil(toGain/wg.ratePerWeek);
-    etaHtml=`<div style="background:#ede9fe;border-radius:10px;padding:10px 14px;margin-top:10px;display:flex;align-items:center;gap:8px">
-      <span style="font-size:20px">⏱️</span>
-      <div>
-        <div style="font-size:13px;font-weight:800;color:#5b21b6">${etaString(weeks)}</div>
-        <div style="font-size:11px;color:#7c3aed">at +${wg.ratePerWeek} kg/week · ${toGain} kg total</div>
-      </div>
-    </div>`;
+  if(!goalEditMode){
+    goalEditMode = wg.mode || (wg.targetW > p.w ? 'gain' : (wg.targetW > 0 && wg.targetW < p.w ? 'loss' : 'loss'));
   }
+
+  const isLoss = wg.mode === 'loss';
+  const isGain = wg.mode === 'gain';
+  const isMaint = wg.mode === 'maintain';
+  const hasGoal = (isLoss && wg.targetW > 0 && wg.targetW < p.w && wg.ratePerWeek > 0) ||
+                  (isGain && wg.targetW > p.w && wg.ratePerWeek > 0) ||
+                  (isMaint && wg.targetW > 0);
+
+  const goalLabel = (isLoss && wg.targetW > 0)
+    ? `🔥 Fat Loss: Cut to ${wg.targetW} kg (-${wg.ratePerWeek} kg/wk)`
+    : (isGain && wg.targetW > 0)
+    ? `💪 Weight Gain: Bulk to ${wg.targetW} kg (+${wg.ratePerWeek} kg/wk)`
+    : (isMaint && wg.targetW > 0)
+    ? `⚖️ Weight Maintenance (${p.w} kg)`
+    : '🎯 Tap below to choose your fitness goal';
+  const goalBadgeColor = isLoss ? '#ea580c' : isGain ? '#7c3aed' : isMaint ? '#059669' : 'var(--muted)';
+
+  // ETA in hero
+  let etaHtml = '';
+  if(hasGoal && !isMaint && wg.ratePerWeek > 0){
+    const diffKg = isLoss ? +(p.w - wg.targetW).toFixed(1) : +(wg.targetW - p.w).toFixed(1);
+    if(diffKg > 0){
+      const weeks = Math.ceil(diffKg / wg.ratePerWeek);
+      const etaBg = isLoss ? '#ffedd5' : '#ede9fe';
+      const etaText = isLoss ? '#c2410c' : '#5b21b6';
+      const etaSub = isLoss ? '#ea580c' : '#7c3aed';
+      etaHtml = `<div style="background:${etaBg};border-radius:10px;padding:10px 14px;margin-top:10px;display:flex;align-items:center;gap:8px">
+        <span style="font-size:20px">⏱️</span>
+        <div>
+          <div style="font-size:13px;font-weight:800;color:${etaText}">${etaString(weeks)}</div>
+          <div style="font-size:11px;color:${etaSub}">at ${isLoss?'-':'+'}${wg.ratePerWeek} kg/week · ${diffKg} kg total to ${isLoss?'lose':'gain'}</div>
+        </div>
+      </div>`;
+    }
+  }
+
+  // Active rate & presets for goal editor
+  const activeRate = (wg.mode === goalEditMode && wg.ratePerWeek) ? wg.ratePerWeek : (goalEditMode === 'loss' ? 0.50 : 0.25);
+  const presets = goalEditMode === 'loss' ? LOSS_PRESETS : GAIN_PRESETS;
+  const activePillClass = goalEditMode === 'loss' ? 'active loss' : 'active gain';
+
+  // Mode-specific card styling & text
+  const cardBorderColor = goalEditMode === 'loss' ? '#ea580c' : goalEditMode === 'gain' ? '#a78bfa' : '#10b981';
+  const cardTitleColor = goalEditMode === 'loss' ? '#ea580c' : goalEditMode === 'gain' ? '#7c3aed' : '#059669';
+  const cardIconBg = goalEditMode === 'loss' ? '#ffedd5' : goalEditMode === 'gain' ? '#ede9fe' : '#d1fae5';
+  const cardIcon = goalEditMode === 'loss' ? '🔥' : goalEditMode === 'gain' ? '💪' : '⚖️';
+  const cardTitle = goalEditMode === 'loss' ? 'Fat Loss & Cutting Goal' : goalEditMode === 'gain' ? 'Weight & Muscle Gain Goal' : 'Weight Maintenance';
+
+  const defaultTw = goalEditMode === 'loss'
+    ? (wg.mode==='loss' && wg.targetW < p.w && wg.targetW > 0 ? wg.targetW : '')
+    : goalEditMode === 'gain'
+    ? (wg.mode==='gain' && wg.targetW > p.w ? wg.targetW : '')
+    : p.w;
 
   return `
   <div class="card">
@@ -1550,7 +1736,7 @@ function vMe(){
       </div>
       <div style="font-size:20px;font-weight:800;color:var(--slate)">${userName || (p.sex==='m'?'Gentleman':'Lady')}</div>
       <div style="font-size:13px;color:var(--muted);margin-top:2px">${p.sex==='m'?'Male':'Female'} · ${p.age} years old · ${p.h} cm · ${p.w} kg</div>
-      <div style="font-size:12px;font-weight:700;color:#7c3aed;margin-top:4px">🎯 Goal: ${goalLabel}</div>
+      <div style="font-size:12px;font-weight:700;color:${goalBadgeColor};margin-top:4px">🎯 Goal: ${goalLabel}</div>
       <div class="privacy-badge">🔒 Stored 100% locally on your device</div>
       <div class="profile-targets">
         <div class="profile-target-item">
@@ -1559,7 +1745,7 @@ function vMe(){
         </div>
         <div class="profile-target-item">
           <div class="profile-target-val" style="color:#f97316">${t.p}g</div>
-          <div class="profile-target-label">Protein</div>
+          <div class="profile-target-label">${isLoss?'Shield Protein':isGain?'Build Protein':'Protein'}</div>
         </div>
         <div class="profile-target-item">
           <div class="profile-target-val" style="color:#3b82f6">${t.c}g</div>
@@ -1623,42 +1809,77 @@ function vMe(){
     <button class="btn-primary" onclick="saveMe()">💾 Save Profile Changes</button>
   </div>
 
-  <div class="card" style="border:2px solid #a78bfa">
+  <div class="card" style="border:2px solid ${cardBorderColor}">
+    <div class="goal-mode-tabs">
+      <button class="goal-mode-tab ${goalEditMode==='loss'?'active loss':''}" onclick="setGoalMode('loss')">
+        🔥 Fat Loss (Cut)
+      </button>
+      <button class="goal-mode-tab ${goalEditMode==='gain'?'active gain':''}" onclick="setGoalMode('gain')">
+        💪 Weight Gain (Bulk)
+      </button>
+      <button class="goal-mode-tab ${goalEditMode==='maintain'?'active maintain':''}" onclick="setGoalMode('maintain')">
+        ⚖️ Maintain
+      </button>
+    </div>
+
     <div class="section-head">
-      <div class="icon" style="background:#ede9fe">💪</div>
-      <h3 style="color:#7c3aed">Weight Gain Goal</h3>
+      <div class="icon" style="background:${cardIconBg}">${cardIcon}</div>
+      <h3 style="color:${cardTitleColor}">${cardTitle}</h3>
     </div>
-    <div class="field">
-      <label>Target Weight (kg)</label>
-      <input id="tw" type="number" step="0.5" min="${p.w+0.5}"
-        placeholder="e.g. ${Math.round(p.w+5)}"
-        value="${wg.targetW>p.w?wg.targetW:''}"
-        oninput="updateGoalPreview()">
-    </div>
-    <div class="field">
-      <label>Weekly Gain Rate (Select pace or enter custom)</label>
-      <div class="rate-pills">
-        ${RATE_PRESETS.map(preset=>`
-          <button class="rate-pill${Math.abs((wg.ratePerWeek||0.25) - preset.r) < 0.001 ? ' active' : ''}"
-            data-rate="${preset.r}" onclick="selectRate(${preset.r}, this)">
-            <span class="rate-pill-rate">${preset.label}</span>
-            <span class="rate-pill-desc">${preset.tag} (${preset.kcal})</span>
-          </button>
-        `).join('')}
+
+    ${goalEditMode === 'maintain' ? `
+      <div style="background:#f0fdf4;border-radius:12px;padding:14px;margin-bottom:14px;border:1px solid #bbf7d0">
+        <div style="font-size:14px;font-weight:700;color:#166534;margin-bottom:4px">⚖️ Maintain Your Current Bodyweight</div>
+        <div style="font-size:12px;color:#15803d;line-height:1.5">
+          Eat at your Total Daily Energy Expenditure (<b>${t.tdee} kcal/day</b>) with balanced protein (<b>${Math.round(p.w * 1.6)}g/day</b>) to sustain your healthy bodyweight of <b>${p.w} kg</b>.
+        </div>
       </div>
-      <div class="rate-custom-row">
-        <label>⚙️ Custom pace:</label>
-        <input class="rate-custom-input" id="customRate" type="number" step="0.05" min="0.05" max="2.0"
-          placeholder="0.25"
-          value="${wg.ratePerWeek||0.25}"
-          oninput="onCustomRateInput(this.value)">
-        <span style="font-size:12px;color:var(--muted);font-weight:600">kg / week</span>
+      <button class="btn-primary" style="background:linear-gradient(90deg,#059669,#10b981);box-shadow:0 4px 12px rgba(5,150,105,.35)" onclick="saveGoal()">
+        ⚖️ Set Maintenance Goal
+      </button>
+    ` : `
+      <div class="field">
+        <label>${goalEditMode==='loss' ? `Target Weight (kg) — Lower than current (${p.w} kg)` : `Target Weight (kg) — Higher than current (${p.w} kg)`}</label>
+        <input id="tw" type="number" step="0.5"
+          ${goalEditMode==='loss' ? `max="${(p.w - 0.5).toFixed(1)}" placeholder="e.g. ${Math.max(30, Math.round(p.w - 5))}"` : `min="${(p.w + 0.5).toFixed(1)}" placeholder="e.g. ${Math.round(p.w + 5)}"`}
+          value="${defaultTw}"
+          oninput="updateGoalPreview()">
       </div>
-      <input type="hidden" id="rw" value="${wg.ratePerWeek||0.25}">
-    </div>
-    <div id="goalPreview" style="margin-top:2px">${hasGoal?goalPreviewHtml(wg.targetW,wg.ratePerWeek,t,p.w):''}</div>
-    <button class="btn-primary" style="background:linear-gradient(90deg,#7c3aed,#a855f7);box-shadow:0 4px 12px rgba(124,58,237,.35);margin-top:4px" onclick="saveGoal()">🎯 Set Gain Goal</button>
-    ${hasGoal?`<button class="btn-ghost" onclick="clearGoal()">✕ Clear Goal</button>`:''}
+
+      <div class="field">
+        <label>Weekly ${goalEditMode==='loss'?'Loss':'Gain'} Rate (Select pace or enter custom)</label>
+        <div class="rate-pills">
+          ${presets.map(preset=>`
+            <button class="rate-pill ${Math.abs(activeRate - preset.r) < 0.001 ? activePillClass : ''}"
+              data-rate="${preset.r}" onclick="selectRate(${preset.r}, this)">
+              <span class="rate-pill-rate">${preset.label}</span>
+              <span class="rate-pill-desc">${preset.tag} (${preset.kcal})</span>
+            </button>
+          `).join('')}
+        </div>
+        <div class="rate-custom-row">
+          <label>⚙️ Custom pace:</label>
+          <input class="rate-custom-input" id="customRate" type="number" step="0.05" min="0.05" max="${goalEditMode==='loss'?'1.5':'2.0'}"
+            placeholder="${activeRate}"
+            value="${activeRate}"
+            oninput="onCustomRateInput(this.value)">
+          <span style="font-size:12px;color:var(--muted);font-weight:600">kg / week</span>
+        </div>
+        <input type="hidden" id="rw" value="${activeRate}">
+      </div>
+
+      <div id="goalPreview" style="margin-top:2px">
+        ${defaultTw ? goalPreviewHtml(goalEditMode, defaultTw, activeRate, t, p.w) : ''}
+      </div>
+
+      <button class="btn-primary"
+        style="${goalEditMode==='loss' ? 'background:linear-gradient(90deg,#ea580c,#f97316);box-shadow:0 4px 12px rgba(234,88,12,.35)' : 'background:linear-gradient(90deg,#7c3aed,#a855f7);box-shadow:0 4px 12px rgba(124,58,237,.35)'};margin-top:8px"
+        onclick="saveGoal()">
+        ${goalEditMode==='loss' ? '🔥 Set Fat Loss Goal' : '💪 Set Weight Gain Goal'}
+      </button>
+    `}
+
+    ${hasGoal ? `<button class="btn-ghost" onclick="clearGoal()">✕ Clear Goal / Return to Maintenance</button>` : ''}
     ${etaHtml}
   </div>
 
@@ -1696,9 +1917,15 @@ function saveMe(){
   render();
 }
 
+function setGoalMode(mode){
+  goalEditMode = mode;
+  render();
+}
+
 function selectRate(r,el){
-  document.querySelectorAll('.rate-pill').forEach(p=>p.classList.remove('active'));
-  if(el) el.classList.add('active');
+  const activeClass = goalEditMode === 'loss' ? 'loss' : 'gain';
+  document.querySelectorAll('.rate-pill').forEach(p => p.classList.remove('active', 'loss', 'gain'));
+  if(el) el.classList.add('active', activeClass);
   $('#rw').value=r;
   const cr=$('#customRate');if(cr)cr.value=r;
   updateGoalPreview();
@@ -1707,75 +1934,155 @@ function selectRate(r,el){
 function onCustomRateInput(val){
   const r=+val;
   if(r>0){
+    const activeClass = goalEditMode === 'loss' ? 'loss' : 'gain';
     document.querySelectorAll('.rate-pill').forEach(p=>{
-      p.classList.toggle('active', Math.abs(+p.dataset.rate - r) < 0.001);
+      const match = Math.abs(+p.dataset.rate - r) < 0.001;
+      p.classList.remove('active', 'loss', 'gain');
+      if(match) p.classList.add('active', activeClass);
     });
     $('#rw').value=r;
     updateGoalPreview();
   }
 }
 
-function goalPreviewHtml(tw,rw,t,cw){
-  if(!tw||!rw||tw<=cw)return'';
-  const toGain=+(tw-cw).toFixed(1);
-  const weeks=Math.ceil(toGain/rw);
-  const surplus=Math.round((rw*7700)/7);
-  const kcal=Math.max(1500,t.tdee+surplus);
-  const prot=Math.round(cw*2.0);
-  return `<div style="background:linear-gradient(135deg,#ede9fe,#f5f3ff);border-radius:12px;padding:12px 14px;margin-top:10px">
-    <div style="font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Your Plan Preview</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
-      <div style="text-align:center">
-        <div style="font-size:18px;font-weight:800;color:#5b21b6">${kcal}</div>
-        <div style="font-size:10px;color:#7c3aed">kcal/day</div>
+function goalPreviewHtml(mode, tw, rw, t, cw){
+  if(mode === 'maintain') return '';
+  if(!tw || !rw) return '';
+  if(mode === 'loss'){
+    if(tw >= cw) return '';
+    const toLose = +(cw - tw).toFixed(1);
+    const weeks = Math.ceil(toLose / rw);
+    const deficit = Math.round((rw * 7700) / 7);
+    const floor = S.prof.sex === 'm' ? 1400 : 1200;
+    const kcal = Math.max(floor, t.tdee - deficit);
+    const prot = Math.round(cw * 2.2);
+    return `<div style="background:linear-gradient(135deg,#ffedd5,#fff7ed);border-radius:12px;padding:12px 14px;margin-top:10px">
+      <div style="font-size:11px;font-weight:700;color:#ea580c;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">🔥 Fat Loss Plan Preview</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
+        <div style="text-align:center">
+          <div style="font-size:18px;font-weight:800;color:#c2410c">${kcal}</div>
+          <div style="font-size:10px;color:#ea580c">kcal/day</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:18px;font-weight:800;color:#c2410c">-${deficit}</div>
+          <div style="font-size:10px;color:#ea580c">deficit/d</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:18px;font-weight:800;color:#c2410c">${prot}g</div>
+          <div style="font-size:10px;color:#ea580c">shield protein</div>
+        </div>
       </div>
-      <div style="text-align:center">
-        <div style="font-size:18px;font-weight:800;color:#5b21b6">+${surplus}</div>
-        <div style="font-size:10px;color:#7c3aed">surplus</div>
+      <div style="display:flex;align-items:center;gap:6px;background:rgba(234,88,12,.12);border-radius:8px;padding:7px 10px">
+        <span style="font-size:16px">⏱️</span>
+        <div>
+          <span style="font-size:13px;font-weight:800;color:#c2410c">${etaString(weeks)}</span>
+          <span style="font-size:11px;color:#ea580c"> · ${toLose} kg fat loss</span>
+        </div>
       </div>
-      <div style="text-align:center">
-        <div style="font-size:18px;font-weight:800;color:#5b21b6">${prot}g</div>
-        <div style="font-size:10px;color:#7c3aed">protein</div>
+    </div>`;
+  }
+  if(mode === 'gain'){
+    if(tw <= cw) return '';
+    const toGain = +(tw - cw).toFixed(1);
+    const weeks = Math.ceil(toGain / rw);
+    const surplus = Math.round((rw * 7700) / 7);
+    const kcal = Math.max(1400, t.tdee + surplus);
+    const prot = Math.round(cw * 2.0);
+    return `<div style="background:linear-gradient(135deg,#ede9fe,#f5f3ff);border-radius:12px;padding:12px 14px;margin-top:10px">
+      <div style="font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">💪 Weight Gain Plan Preview</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
+        <div style="text-align:center">
+          <div style="font-size:18px;font-weight:800;color:#5b21b6">${kcal}</div>
+          <div style="font-size:10px;color:#7c3aed">kcal/day</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:18px;font-weight:800;color:#5b21b6">+${surplus}</div>
+          <div style="font-size:10px;color:#7c3aed">surplus/d</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:18px;font-weight:800;color:#5b21b6">${prot}g</div>
+          <div style="font-size:10px;color:#7c3aed">build protein</div>
+        </div>
       </div>
-    </div>
-    <div style="display:flex;align-items:center;gap:6px;background:rgba(124,58,237,.12);border-radius:8px;padding:7px 10px">
-      <span style="font-size:16px">⏱️</span>
-      <div>
-        <span style="font-size:13px;font-weight:800;color:#5b21b6">${etaString(weeks)}</span>
-        <span style="font-size:11px;color:#7c3aed"> · ${toGain} kg to gain</span>
+      <div style="display:flex;align-items:center;gap:6px;background:rgba(124,58,237,.12);border-radius:8px;padding:7px 10px">
+        <span style="font-size:16px">⏱️</span>
+        <div>
+          <span style="font-size:13px;font-weight:800;color:#5b21b6">${etaString(weeks)}</span>
+          <span style="font-size:11px;color:#7c3aed"> · ${toGain} kg to gain</span>
+        </div>
       </div>
-    </div>
-  </div>`;
+    </div>`;
+  }
+  return '';
 }
 
 function updateGoalPreview(){
   const tw=+($('#tw')||{}).value;
-  const rw=+($('#rw')||{}).value||0.25;
+  const rw=+($('#rw')||{}).value || (goalEditMode==='loss'?0.5:0.25);
   const el=$('#goalPreview');
   if(!el)return;
-  if(tw>S.prof.w && rw>0){
-    const t=target();
-    el.innerHTML=goalPreviewHtml(tw,rw,t,S.prof.w);
-  } else {
-    el.innerHTML='';
-  }
+  const t=target();
+  el.innerHTML=goalPreviewHtml(goalEditMode,tw,rw,t,S.prof.w);
 }
 
 function saveGoal(){
-  const tw=+($('#tw').value);
-  const rw=+($('#rw').value)||0.25;
-  if(!tw||tw<=S.prof.w){showToast('Target weight must be above current weight');return;}
-  if(!S.wgoal)S.wgoal={};
-  S.wgoal.targetW=tw;
-  S.wgoal.ratePerWeek=rw;
-  // Override the generic goal with gain mode
-  S.prof.goal=0;
-  save();showToast('Weight gain goal set ✓');render();
+  if(goalEditMode === 'maintain'){
+    S.wgoal = { mode: 'maintain', targetW: S.prof.w, ratePerWeek: 0, startW: S.prof.w };
+    S.prof.goal = 0;
+    save();
+    showToast('⚖️ Maintenance goal saved ✓');
+    render();
+    return;
+  }
+
+  const twInput = $('#tw');
+  const tw = twInput ? +twInput.value : 0;
+  const rwInput = $('#rw');
+  const rw = rwInput ? +rwInput.value : 0;
+
+  if(goalEditMode === 'loss'){
+    if(!tw || tw >= S.prof.w){
+      showToast('⚠️ Target weight must be lower than your current weight (' + S.prof.w + ' kg)');
+      if(twInput) twInput.focus();
+      return;
+    }
+    if(!rw || rw <= 0){
+      showToast('⚠️ Please select a weekly loss rate');
+      return;
+    }
+    const prevStart = (S.wgoal && S.wgoal.mode === 'loss' && S.wgoal.startW) ? S.wgoal.startW : S.prof.w;
+    S.wgoal = { mode: 'loss', targetW: tw, ratePerWeek: rw, startW: prevStart };
+    S.prof.goal = 0;
+    save();
+    showToast('🔥 Fat loss goal set! Deficit & 2.2g/kg protein active ✓');
+    render();
+    return;
+  }
+
+  if(goalEditMode === 'gain'){
+    if(!tw || tw <= S.prof.w){
+      showToast('⚠️ Target weight must be higher than your current weight (' + S.prof.w + ' kg)');
+      if(twInput) twInput.focus();
+      return;
+    }
+    if(!rw || rw <= 0){
+      showToast('⚠️ Please select a weekly gain rate');
+      return;
+    }
+    const prevStart = (S.wgoal && S.wgoal.mode === 'gain' && S.wgoal.startW) ? S.wgoal.startW : S.prof.w;
+    S.wgoal = { mode: 'gain', targetW: tw, ratePerWeek: rw, startW: prevStart };
+    S.prof.goal = 0;
+    save();
+    showToast('💪 Muscle & weight gain goal set! Surplus active ✓');
+    render();
+    return;
+  }
 }
 
 function clearGoal(){
-  if(!confirm('Clear your weight gain goal?'))return;
-  S.wgoal={targetW:0,ratePerWeek:0.25};
+  if(!confirm('Clear your current goal and return to maintenance?'))return;
+  S.wgoal={mode:'maintain',targetW:0,ratePerWeek:0,startW:S.prof.w};
+  S.prof.goal=0;
   save();showToast('Goal cleared');render();
 }
 
